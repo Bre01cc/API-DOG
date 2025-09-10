@@ -3,8 +3,8 @@
 
 
 
-async function buscarImagens() {
-    const url = `https://dog.ceo/api/breed/husky/images`
+async function buscarImagens(texto) {
+    const url = `https://dog.ceo/api/breed/${texto}/images`
     const response = await fetch(url)
     const imagem = await response.json()
     return imagem.message
@@ -21,12 +21,18 @@ async function buscarImagens() {
     container.appendChild(foto)
 }
 
-async function carregar() {
-    const imagens = await buscarImagens()
+async function carregar(texto) {
+    const imagens = await buscarImagens(texto)
     imagens.forEach(criarImg)
 }
 carregar()
 
+const botaoBuscar = document.getElementById('buscar')
+
+botaoBuscar.addEventListener('onclick',()=>{
+    const input = document.getElementById('caixa-texto').value
+    carregar(input)
+})
 // buscarImagens('')
 //    const arrayImagens = await buscarImagens()
 
