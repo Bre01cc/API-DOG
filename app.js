@@ -2,31 +2,31 @@
 
 
 
+
 async function buscarImagens() {
     const url = `https://dog.ceo/api/breed/husky/images`
     const response = await fetch(url)
     const imagem = await response.json()
-    // console.log(imagem.message[30])
     return imagem.message
 }
-
-
-function criarImg() {
+    function criarImg(imagem) {
     const container = document.getElementById('container')
     const foto = document.createElement('div')
+    foto.classList.add('foto')
     const img = document.createElement('img')
-    let texto = document.getElementById('caixa-texto').value
-    const imagens = buscarImagens()
-    img.src = imagens
+    // let texto = document.getElementById('caixa-texto').value
+    // const imagens = await buscarImagens()
+    img.src= imagem
     foto.appendChild(img)
     container.appendChild(foto)
 }
 
-function carregar() {
-    const imagens = buscarImagens()
-    imagens.array.forEach(criarImg)
+async function carregar() {
+    const imagens = await buscarImagens()
+    imagens.forEach(criarImg)
 }
 carregar()
+
 // buscarImagens('')
 //    const arrayImagens = await buscarImagens()
 
