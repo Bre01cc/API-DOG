@@ -20,17 +20,14 @@ async function buscarImagens(raca) {
     const url = `https://dog.ceo/api/breed/${raca}/images`
     const response = await fetch(url)
     const imagem = await response.json()
-    
-    if(response.status===404){
 
-        let mensagem = "Não encontrado"
-        return mensagem
+    if (response.status === 404) {
+        throw new Error('Não encontrado')
+    } else {
 
-    }else{
+        return imagem.message
 
-    return imagem.message
-
-    }    
+    }
 }
 //Responsave por criar as imagens dos cachorros na página
 function criarImg(imagem) {
@@ -45,18 +42,19 @@ function criarImg(imagem) {
 
 //Responsave por percorrer o JSON e por chamar as duas funções acima
 async function carregar(raca) {
-   
+
     const container = document.getElementById('container');
-    container.innerHTML = ''; // limpa imagens anteriores
-    const imagens = await buscarImagens(raca)
-     if(imagens==='Não encontrado'){
+    container.innerHTML = '';
+    try {
+        const imagens = await buscarImagens(raca)
+        imagens.forEach(criarImg);
+    } catch (error) {
         const erro = document.createElement('h2');
         erro.textContent = 'Raça não encontrada!!!';
         container.appendChild(erro);
-     }else{
-        imagens.forEach(criarImg);
-     }
-    
+    } // limpa imagens anteriores
+
+
 }
 
 
@@ -66,14 +64,14 @@ const botaoBuscar = document.getElementById('buscar')
 botaoBuscar.addEventListener('click', () => {
     const input = document.getElementById('caixa-texto').value.toLowerCase()
     if (!input) {
-         const container = document.getElementById('container');
-          container.innerHTML = '';
-         const erro = document.createElement('h2');
+        const container = document.getElementById('container');
+        container.innerHTML = '';
+        const erro = document.createElement('h2');
 
         erro.textContent = 'O campo não pode ficar vazio!!!';
         container.appendChild(erro);
     } else {
-      
+
         carregar(input)
     }
 
